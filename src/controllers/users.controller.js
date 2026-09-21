@@ -1,12 +1,13 @@
 // src/controllers/users.controller.js
 
+// Arreglo simulación de base de datos
+const users = [
+  { id: 1, name: "Juan Andrés Betancur", email: "andres@example.com", role: "user" },
+  { id: 2, name: "Carlos Navia", email: "carlos@example.com", role: "admin" }
+];
+
 // GET /api/v1/users
 export const getUsers = (req, res) => {
-  const users = [
-    { id: 1, name: "Juan Andrés Betancur", email: "andres@example.com", role: "user" },
-    { id: 2, name: "Carlos Navia", email: "carlos@example.com", role: "admin" }
-  ];
-
   return res.status(200).json({
     status: 'success',
     data: users
@@ -15,18 +16,19 @@ export const getUsers = (req, res) => {
 
 // GET /api/v1/users/:id
 export const getUserById = (req, res) => {
-  const { id } = req.params;
+  const userId = Number(req.params.id);
+  const user = users.find((u) => u.id === userId);
 
-  if (id !== "1") {
+  if (!user) {
     return res.status(404).json({
       status: 'fail',
-      message: `Usuario con ID ${id} no encontrado`
+      message: `Usuario con ID ${req.params.id} no encontrado`
     });
   }
 
   return res.status(200).json({
     status: 'success',
-    data: { id: 1, name: "Juan Andrés Betancur", email: "andres@example.com", role: "user" }
+    data: user
   });
 };
 
@@ -41,10 +43,19 @@ export const createUser = (req, res) => {
     });
   }
 
+  const newUser = {
+    id: users.length + 1,
+    name,
+    email,
+    role: role || 'user'
+  };
+
+  users.push(newUser);
+
   return res.status(201).json({
     status: 'success',
     message: 'Usuario creado exitosamente',
-    data: { id: Date.now(), name, email, role: role || 'user' }
+    data: newUser
   });
 };
 
