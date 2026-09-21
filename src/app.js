@@ -5,6 +5,7 @@ const routes = require('./routes');
 const { notFoundHandler, globalErrorHandler } = require('./middlewares/error.middleware');
 
 const app = express();
+const PORT = process.env.PORT || 8000;
 
 // Middlewares iniciales
 app.use(cors());
@@ -27,5 +28,10 @@ app.use(notFoundHandler);
 
 // Middleware 500 - Debe ir al final de todos los middleware
 app.use(globalErrorHandler);
+
+// Levantar el servidor
+app.listen(PORT, () => {
+  console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
+});
 
 module.exports = app;
