@@ -66,8 +66,100 @@ npm run dev
 
 
 
+## 📝 Ejemplos de Peticiones y Respuestas
+
+### 1. Registrar una nueva rutina (`POST /api/v1/workouts`)
+**Body (JSON):**
+```json
+{
+  "title": "Entrenamiento de Espalda y Bíceps",
+  "duration_min": 50
+}
+
+Respuesta (201 Created):
+
+{
+  "status": "success",
+  "message": "Entrenamiento registrado exitosamente",
+  "data": {
+    "id": 1758410293000,
+    "title": "Entrenamiento de Espalda y Bíceps",
+    "duration_min": 50,
+    "date": "2026-09-21T14:30:00.000Z"
+  }
+}
+
+2. Consultar rutinas con límite (GET /api/v1/workouts?limit=2)
+Respuesta (200 OK):
+
+{
+  "status": "success",
+  "data": [
+    {
+      "id": 1,
+      "title": "Entrenamiento de Espalda y Bíceps",
+      "duration_min": 50
+    },
+    {
+      "id": 2,
+      "title": "Pierna y Abdomen",
+      "duration_min": 60
+    }
+  ]
+}
+
+3. Actualización completa de usuario (PUT /api/v1/users/1)
+Body (JSON):
+
+{
+  "name": "Juan Andrés Betancur",
+  "email": "juan.betancur@example.com",
+  "role": "user"
+}
+
+Respuesta (200 OK):
+
+{
+  "status": "success",
+  "message": "Usuario 1 actualizado completamente",
+  "data": {
+    "id": 1,
+    "name": "Juan Andrés Betancur",
+    "email": "juan.betancur@example.com",
+    "role": "user"
+  }
+}
+
+4. Actualización parcial de usuario (PATCH /api/v1/users/1)
+Body (JSON):
+
+{
+  "name": "Juan Andrés Betancur"
+}
+
+Respuesta (200 OK):
+
+{
+  "status": "success",
+  "message": "Campos del usuario 1 actualizados parcialmente",
+  "data": {
+    "id": 1,
+    "name": "Juan Andrés Betancur"
+  }
+}
+
+5. Eliminar un recurso (DELETE /api/v1/workouts/1)
+Respuesta (204 No Content):
+(Cuerpo de respuesta vacío)
 
 
+6. Error en ruta no encontrada (GET /api/v1/ruta-inexistente)
+Respuesta (404 Not Found):
+
+{
+  "status": "fail",
+  "error": "No se encontró la ruta /api/v1/ruta-inexistente en este servidor."
+}
 
 ## 🌳 Estrategia de Versionamiento (Gitflow)
 
