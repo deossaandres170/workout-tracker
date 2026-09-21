@@ -1,9 +1,10 @@
-// src/routes/index.js
-const express = require('express');
-const router = express.Router();
-const v1Routes = require('./v1');
+import { Router } from 'express';
+import userRoutes from './v1/users.routes.js';
+import workoutRoutes from './v1/workouts.routes.js';
 
-// Redirigir /api/v1 a las rutas versionadas
-router.use('/v1', v1Routes);
+const router = Router();
 
-module.exports = router;
+router.use('/v1/users', userRoutes);
+router.use('/v1/workouts', workoutRoutes);
+
+export default router;

@@ -1,23 +1,20 @@
-// src/routes/v1/users.routes.js
-const express = require('express');
-const router = express.Router();
-const {
+import { Router } from 'express';
+import {
   getUsers,
   getUserById,
+  createUser,
   updateUser,
   patchUser,
   deleteUser
-} = require('../../controllers/users.controller');
+} from '../../controllers/users.controller.js';
 
-// GET
+const router = Router();
+
 router.get('/', getUsers);
 router.get('/:id', getUserById);
-
-// PUT y PATCH
+router.post('/', createUser);
 router.put('/:id', updateUser);
 router.patch('/:id', patchUser);
-
-// DELETE
 router.delete('/:id', deleteUser);
 
-module.exports = router;
+export default router;

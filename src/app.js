@@ -1,8 +1,8 @@
 // src/app.js
-const express = require('express');
-const cors = require('cors');
-const routes = require('./routes');
-const { notFoundHandler, globalErrorHandler } = require('./middlewares/error.middleware');
+import express from 'express';
+import cors from 'cors';
+import routes from './routes/index.js';
+import { notFoundHandler, globalErrorHandler } from './middlewares/error.middleware.js';
 
 const app = express();
 const PORT = process.env.PORT || 8000;
@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 8000;
 app.use(cors());
 app.use(express.json());
 
-// Montar todas las rutas principales de la API
+// Montar todas las rutas principales de la API (/api/v1/...)
 app.use('/api', routes);
 
 // Ruta de chequeo de estado (Healthcheck)
@@ -23,10 +23,8 @@ app.get('/', (req, res) => {
   });
 });
 
-// Middleware 404 - Debe ir inmediatamente después de las rutas
+// Middlewares para manejo de errores
 app.use(notFoundHandler);
-
-// Middleware 500 - Debe ir al final de todos los middleware
 app.use(globalErrorHandler);
 
 // Levantar el servidor
@@ -34,4 +32,4 @@ app.listen(PORT, () => {
   console.log(`🚀 Servidor corriendo en http://localhost:${PORT}`);
 });
 
-module.exports = app;
+export default app;

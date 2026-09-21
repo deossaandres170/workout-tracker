@@ -1,7 +1,7 @@
 // src/middlewares/error.middleware.js
 
 // Middleware para manejar rutas 404 (No Encontradas)
-const notFoundHandler = (req, res, next) => {
+export const notFoundHandler = (req, res, next) => {
   res.status(404).json({
     status: 'fail',
     error: `No se encontró la ruta ${req.originalUrl} en este servidor.`
@@ -9,7 +9,7 @@ const notFoundHandler = (req, res, next) => {
 };
 
 // Middleware global para manejo de errores 500 (Errores del servidor)
-const globalErrorHandler = (err, req, res, next) => {
+export const globalErrorHandler = (err, req, res, next) => {
   console.error('🔥 Error Detectado:', err.stack);
 
   const statusCode = err.statusCode || 500;
@@ -19,9 +19,4 @@ const globalErrorHandler = (err, req, res, next) => {
     message: err.message || 'Error interno del servidor',
     ...(process.env.NODE_ENV === 'development' && { stack: err.stack })
   });
-};
-
-module.exports = {
-  notFoundHandler,
-  globalErrorHandler
 };

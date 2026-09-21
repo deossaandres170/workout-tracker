@@ -1,7 +1,7 @@
 // src/controllers/users.controller.js
 
 // GET /api/v1/users
-const getUsers = (req, res) => {
+export const getUsers = (req, res) => {
   const users = [
     { id: 1, name: "Juan Andrés Betancur", email: "andres@example.com", role: "user" },
     { id: 2, name: "Carlos Navia", email: "carlos@example.com", role: "admin" }
@@ -14,7 +14,7 @@ const getUsers = (req, res) => {
 };
 
 // GET /api/v1/users/:id
-const getUserById = (req, res) => {
+export const getUserById = (req, res) => {
   const { id } = req.params;
 
   if (id !== "1") {
@@ -30,8 +30,26 @@ const getUserById = (req, res) => {
   });
 };
 
+// POST /api/v1/users
+export const createUser = (req, res) => {
+  const { name, email, role } = req.body;
+
+  if (!name || !email) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Los campos name y email son obligatorios'
+    });
+  }
+
+  return res.status(201).json({
+    status: 'success',
+    message: 'Usuario creado exitosamente',
+    data: { id: Date.now(), name, email, role: role || 'user' }
+  });
+};
+
 // PUT /api/v1/users/:id (Actualización completa)
-const updateUser = (req, res) => {
+export const updateUser = (req, res) => {
   const { id } = req.params;
   const { name, email, role } = req.body;
 
@@ -50,7 +68,7 @@ const updateUser = (req, res) => {
 };
 
 // PATCH /api/v1/users/:id (Actualización parcial)
-const patchUser = (req, res) => {
+export const patchUser = (req, res) => {
   const { id } = req.params;
   const updates = req.body;
 
@@ -69,17 +87,9 @@ const patchUser = (req, res) => {
 };
 
 // DELETE /api/v1/users/:id
-const deleteUser = (req, res) => {
+export const deleteUser = (req, res) => {
   const { id } = req.params;
 
   // Estado HTTP 204 No Content
   return res.status(204).send();
-};
-
-module.exports = {
-  getUsers,
-  getUserById,
-  updateUser,
-  patchUser,
-  deleteUser
 };
