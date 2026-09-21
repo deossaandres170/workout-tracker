@@ -5,10 +5,12 @@ const router = express.Router();
 const usersRoutes = require('./users.routes');
 const exercisesRoutes = require('./exercises.routes');
 const workoutsRoutes = require('./workouts.routes');
+const reportsRoutes = require('./reports.routes');
 
-// Montar recursos según el diseño REST
+// Montar sub-rutas
 router.use('/users', usersRoutes);
 router.use('/exercises', exercisesRoutes);
 router.use('/workouts', workoutsRoutes);
+router.use('/reports', reportsRoutes);
 
 module.exports = router;
