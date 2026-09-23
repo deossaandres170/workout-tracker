@@ -1,7 +1,7 @@
 // src/controllers/users.controller.js
 
-// Arreglo simulación de base de datos
-const users = [
+// Arreglo en memoria (Simulación de BD)
+let users = [
   { id: 1, name: "Juan Andrés Betancur", email: "andres@example.com", role: "user" },
   { id: 2, name: "Carlos Navia", email: "carlos@example.com", role: "admin" }
 ];
@@ -44,7 +44,7 @@ export const createUser = (req, res) => {
   }
 
   const newUser = {
-    id: users.length + 1,
+    id: users.length > 0 ? users[users.length - 1].id + 1 : 1,
     name,
     email,
     role: role || 'user'
@@ -61,8 +61,17 @@ export const createUser = (req, res) => {
 
 // PUT /api/v1/users/:id (Actualización completa)
 export const updateUser = (req, res) => {
-  const { id } = req.params;
+  const userId = Number(req.params.id);
   const { name, email, role } = req.body;
+
+  const index = users.findIndex((u) => u.id === userId);
+
+  if (index === -1) {
+    return res.status(404).json({
+      status: 'fail',
+      message: `Usuario con ID ${req.params.id} no encontrado`
+    });
+  }
 
   if (!name || !email || !role) {
     return res.status(400).json({
@@ -71,17 +80,29 @@ export const updateUser = (req, res) => {
     });
   }
 
+  // Reemplazo completo en el arreglo
+  users[index] = { id: userId, name, email, role };
+
   return res.status(200).json({
     status: 'success',
-    message: `Usuario ${id} actualizado completamente`,
-    data: { id: Number(id), name, email, role }
+    message: `Usuario ${userId} actualizado completamente`,
+    data: users[index]
   });
 };
 
 // PATCH /api/v1/users/:id (Actualización parcial)
 export const patchUser = (req, res) => {
-  const { id } = req.params;
+  const userId = Number(req.params.id);
   const updates = req.body;
+
+  const index = users.findIndex((u) => u.id === userId);
+
+  if (index === -1) {
+    return res.status(404).json({
+      status: 'fail',
+      message: `Usuario con ID ${req.params.id} no encontrado`
+    });
+  }
 
   if (Object.keys(updates).length === 0) {
     return res.status(400).json({
@@ -90,17 +111,30 @@ export const patchUser = (req, res) => {
     });
   }
 
+  // Actualización parcial manteniendo datos previos
+  users[index] = { ...users[index], ...updates };
+
   return res.status(200).json({
     status: 'success',
-    message: `Campos del usuario ${id} actualizados parcialmente`,
-    data: { id: Number(id), ...updates }
+    message: `Campos del usuario ${userId} actualizados parcialmente`,
+    data: users[index]
   });
 };
 
 // DELETE /api/v1/users/:id
 export const deleteUser = (req, res) => {
-  const { id } = req.params;
+  const userId = Number(req.params.id);
+  const index = users.findIndex((u) => u.id === userId);
 
-  // Estado HTTP 204 No Content
+  if (index === -1) {
+    return res.status(404).json({
+      status: 'fail',
+      message: `Usuario con ID ${req.params.id} no encontrado`
+    });
+  }
+
+  // Eliminar elemento del arreglo
+  users = users.filter((u) => u.id !== userId);
+
   return res.status(204).send();
 };
